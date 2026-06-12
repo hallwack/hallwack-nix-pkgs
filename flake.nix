@@ -5,7 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
-  output =
+  outputs =
     { self, nixpkgs }:
     let
       systems = [
