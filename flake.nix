@@ -24,8 +24,6 @@
         {
           helium-browser = pkgs.callPackage ./pkgs/helium-browser/default.nix { };
           zennotes = pkgs.callPackage ./pkgs/zennotes/default.nix { };
-
-          default = self.packages.${system}.zennotes;
         }
       );
     };

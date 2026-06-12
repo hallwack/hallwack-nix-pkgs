@@ -1,84 +1,159 @@
 # hallwack-nix-pkgs ❄️
 
-Welcome to my personal [Nix User Repository (NUR)](https://github.com/nix-community/NUR) and Nix Flake. This repository contains a collection of custom software packages and derivation recipes for NixOS.
+A personal collection of Nix packages and Flakes maintained by Hallwack.
+
+This repository provides custom package definitions for software that may not yet be available in nixpkgs or that require newer releases than those currently packaged upstream.
 
 ## 📦 Available Packages
 
-Currently, this repository provides the following packages:
+| Package          | Description                                                            |
+| ---------------- | ---------------------------------------------------------------------- |
+| `zennotes`       | Keyboard-first local Markdown notes application.                       |
+| `helium-browser` | Lightweight floating browser window for distraction-free multitasking. |
 
-* **`zennotes`**: Keyboard-first local Markdown notes.
-* **`helium-browser`**: A lightweight, floating browser window for multitasking.
+More packages may be added over time as needed.
 
-*(More packages will be added in the future as needed).*
+---
 
-## 🚀 Usage
+## 🚀 Quick Start
 
-You can install or run the packages from this repository using either the official NUR index or directly via Nix Flakes.
+Run an application directly without installing it:
 
-### Option 1: Via NUR (Nix User Repository)
-
-If you have NUR configured in your NixOS setup, you can access the packages under the `hallwack` namespace:
-
-```nix
-# In your configuration.nix or home.nix
-environment.systemPackages = with pkgs; [
-  nur.repos.hallwack.zennotes
-  nur.repos.hallwack.helium-browser
-];
-```
-
-### Option 2: Via Nix Flakes
-
-If you are using a modern Nix setup with Flakes enabled, you can add this repository as an input to your system configuration.
-
-1. Add to inputs in your flake.nix:
-
-```nix
-inputs = {
-  nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  
-  # Add this repository as an input
-  hallnix.url = "github:hallwack/hallnix-pkgs";
-};
-```
-
-2. Call the package in your configuration:
-
-```nix
-outputs = { self, nixpkgs, hallnix, ... }: {
-  nixosConfigurations."your-hostname" = nixpkgs.lib.nixosSystem {
-    system = "x86_64-linux";
-    modules = [
-      ({ pkgs, ... }: {
-        environment.systemPackages = [
-          # Install the packages
-          hallnix.packages.${pkgs.system}.zennotes
-          hallnix.packages.${pkgs.system}.helium-browser
-        ];
-      })
-      # ... other system modules ...
-    ];
-  };
-};
-```
-
-### Option 3: Try it without installing (nix run)
-
-You can temporarily run the applications without installing them globally into your system:
+### Zennotes
 
 ```bash
-nix run github:hallwack/hallnix-pkgs#zennotes
-nix run github:hallwack/hallnix-pkgs#helium-browser
+nix run github:hallwack/hallwack-nix-pkgs#zennotes
 ```
 
-## 🤖 Maintenance & Auto-Updates
+### Helium Browser
 
-This repository uses GitHub Actions and nix-update to automatically track upstream releases.
+```bash
+nix run github:hallwack/hallwack-nix-pkgs#helium-browser
+```
 
-Updates are scheduled to be checked weekly.
+---
 
-SRI hashes (sha256) are calculated and updated automatically via Pull Requests.
+## 📥 Using as a Flake Input
+
+Add this repository as a flake input:
+
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    hallnix.url = "github:hallwack/hallwack-nix-pkgs";
+  };
+}
+```
+
+Then install packages from the flake:
+
+```nix
+{
+  outputs = { self, nixpkgs, hallnix, ... }: {
+    nixosConfigurations.my-host = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+
+      modules = [
+        ({ pkgs, ... }: {
+          environment.systemPackages = [
+            hallnix.packages.${pkgs.system}.zennotes
+            hallnix.packages.${pkgs.system}.helium-browser
+          ];
+        })
+      ];
+    };
+  };
+}
+```
+
+### Home Manager
+
+```nix
+{
+  home.packages = [
+    hallnix.packages.${pkgs.system}.zennotes
+    hallnix.packages.${pkgs.system}.helium-browser
+  ];
+}
+```
+
+---
+
+## 🔨 Development
+
+Build packages locally:
+
+### Build Zennotes
+
+```bash
+nix build .#zennotes
+```
+
+### Build Helium Browser
+
+```bash
+nix build .#helium-browser
+```
+
+Run package checks:
+
+```bash
+nix flake check
+```
+
+---
+
+## 🖥 Supported Systems
+
+The following systems are currently supported:
+
+- x86_64-linux
+- aarch64-linux
+
+Support depends on upstream application availability.
+
+---
+
+## 🤖 Automated Updates
+
+This repository uses GitHub Actions together with `nix-update` to help track upstream releases.
+
+The update workflow:
+
+- Checks upstream releases on a regular schedule
+- Updates package versions automatically
+- Recalculates SRI hashes when required
+- Creates pull requests for review
+
+Automatic updates are intended to reduce maintenance effort while keeping packages reasonably up to date.
+
+---
+
+## 📁 Repository Structure
+
+```text
+.
+├── flake.nix
+├── pkgs
+│   ├── helium-browser
+│   └── zennotes
+└── README.md
+```
+
+---
+
+## 🤝 Contributing
+
+Issues, bug reports, and package suggestions are welcome.
+
+If you encounter packaging issues or upstream changes that break a package, please open an issue or submit a pull request.
+
+---
 
 ## 📄 License
 
-The Nix expressions in this repository are licensed under the MIT License. The software packages themselves are subject to their respective upstream licenses.
+The Nix expressions and repository contents are licensed under the MIT License unless otherwise stated.
+
+Packaged software remains subject to its respective upstream license terms.
