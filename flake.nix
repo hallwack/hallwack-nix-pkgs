@@ -1,7 +1,7 @@
 {
   description = "hallwack's personal collection of software packages.";
 
-  input = {
+  inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
