@@ -75,7 +75,7 @@ nix run github:hallwack/hallnix-pkgs#helium-browser
 
 This repository uses GitHub Actions and nix-update to automatically track upstream releases.
 
-Updates are scheduled to be checked daily.
+Updates are scheduled to be checked weekly.
 
 SRI hashes (sha256) are calculated and updated automatically via Pull Requests.
 
