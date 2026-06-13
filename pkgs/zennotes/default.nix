@@ -35,6 +35,10 @@ in
 appimageTools.wrapType2 {
   inherit pname version src;
 
+  extraPkgs = pkgs: with pkgs; [
+    glib
+  ];
+
   extraInstallCommands = ''
     mkdir -p $out/share/applications
 
