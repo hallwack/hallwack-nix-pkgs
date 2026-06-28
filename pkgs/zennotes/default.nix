@@ -19,12 +19,12 @@
 
 let
   pname = "zennotes";
-  version = "2.3.0";
+  version = "2.8.0";
 
   architectures = {
     "x86_64-linux" = {
       arch = "linux-x86_64";
-      hash = "sha256-IvFGK7n3KQVGETmt6hQUy+bZNTOCkfuwH8ifl4KTxxw=";
+      hash = "sha256-ITuVCTQe3zVo3RSR9cU0rhucB32qKPilQmqVWzJH3kQ=";
     };
   };
 
